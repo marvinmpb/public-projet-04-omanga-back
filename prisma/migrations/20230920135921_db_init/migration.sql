@@ -1,40 +1,20 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - You are about to alter the column `email` on the `User` table. The data in that column could be lost. The data in that column will be cast from `Text` to `VarChar(255)`.
-  - You are about to drop the `Post` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Profile` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `firstname` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `lastname` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `password` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
--- DropForeignKey
-ALTER TABLE "Post" DROP CONSTRAINT "Post_authorId_fkey";
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "firstname" VARCHAR(255) NOT NULL,
+    "lastname" VARCHAR(255) NOT NULL,
+    "email" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255) NOT NULL,
+    "image_url" VARCHAR(500),
+    "role" "Role" NOT NULL DEFAULT 'USER',
+    "city" VARCHAR(255),
+    "zip_code" VARCHAR(15),
 
--- DropForeignKey
-ALTER TABLE "Profile" DROP CONSTRAINT "Profile_userId_fkey";
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "name",
-ADD COLUMN     "city" VARCHAR(255),
-ADD COLUMN     "firstname" VARCHAR(255) NOT NULL,
-ADD COLUMN     "image_url" VARCHAR(500),
-ADD COLUMN     "lastname" VARCHAR(255) NOT NULL,
-ADD COLUMN     "password" VARCHAR(255) NOT NULL,
-ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'USER',
-ADD COLUMN     "zip_code" VARCHAR(15),
-ALTER COLUMN "email" SET DATA TYPE VARCHAR(255);
-
--- DropTable
-DROP TABLE "Post";
-
--- DropTable
-DROP TABLE "Profile";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Review" (
@@ -42,7 +22,7 @@ CREATE TABLE "Review" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "content" VARCHAR(500) NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "rating" INTEGER CHECK ("rating" >= 0 AND "rating" <= 5) NOT NULL,
+    "rating" INTEGER NOT NULL CHECK ("rating" >= 0 AND "rating" <= 5),
     "user_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
 
@@ -52,11 +32,11 @@ CREATE TABLE "Review" (
 -- CreateTable
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
-    "stock" INTEGER NOT NULL CHECK ("stock" => 0),
+    "stock" INTEGER NOT NULL CHECK ("stock" >= 0),
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(500) NOT NULL,
     "image_url" VARCHAR(255) NOT NULL,
-    "price" DOUBLE PRECISION CHECK ("price" >= 0) NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL CHECK ("price" >= 0),
     "category_id" INTEGER NOT NULL,
     "universe_id" INTEGER NOT NULL,
 
@@ -68,7 +48,7 @@ CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "order_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "archeving_date" TIMESTAMP(3) NOT NULL,
-    "product_quantity" INTEGER CHECK ("product_quantity" >= 0) NOT NULL,
+    "product_quantity" INTEGER NOT NULL CHECK ("product_quantity" >= 0),
     "product_id" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
 
@@ -112,6 +92,9 @@ CREATE TABLE "FavoriteUniverse" (
 
     CONSTRAINT "FavoriteUniverse_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Product_category_id_universe_id_key" ON "Product"("category_id", "universe_id");
