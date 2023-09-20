@@ -3,18 +3,6 @@ const app = require('./app');
 const router = require('./router/index')
 require('dotenv').config()
 
-const normalizePort = (val) => {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
-};
-
 const port = (process.env.PORT || '5000');
 
 app.set('port', port);
