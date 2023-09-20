@@ -52,7 +52,7 @@ CREATE TABLE "Review" (
 -- CreateTable
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
-    "stock" INTEGER NOT NULL,
+    "stock" INTEGER NOT NULL CHECK ("stock" => 0),
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(500) NOT NULL,
     "image_url" VARCHAR(255) NOT NULL,
