@@ -2,19 +2,18 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = {
-  getAllUniverses: async (req, res, next) => {
+  getAllProducts: async (req, res, next) => {
     try {
-      const result = await prisma.universe.findMany()
-      res.json(result)
+      const result = await prisma.product.findMany();
+      res.status(200).json(result);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   },
-  getOneUniverse: async (req, res, next) => {
+  getOneProduct: async (req, res, next) => {
     try {
       const id = req.params.id;
-      const result = await prisma.universe.findUnique({
+      const result = await prisma.product.findUnique({
         where: { id: parseInt(id) },
       });
       res.status(200).json(result);
@@ -22,20 +21,20 @@ module.exports = {
       res.status(400).json({ error: error.message });
     }
   },
-  createUniverse: async (req, res, next) => {
+  createProduct: async (req, res, next) => {
     try {
-      const result = await prisma.universe.create({
+      const result = await prisma.product.create({
         data: req.body,
       });
-      res.status(201).json({ message: 'Universe succesfully created', result });
+      res.status(201).json({ message: 'Product succesfully created', result });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
-  deleteOneUniverse: async (req, res, next) => {
+  deleteOneProduct: async (req, res, next) => {
     try {
       const id = req.params.id;
-      const result = await prisma.universe.delete({
+      const result = await prisma.product.delete({
         where: { id: parseInt(id) },
       });
       res.status(204).json();
@@ -43,16 +42,16 @@ module.exports = {
       res.status(500).json({ error: error.message });
     }
   },
-  updateOneUniverse: async (req, res, next) => {
+  updateOneProduct: async (req, res, next) => {
     try {
       const id = req.params.id;
-      const result = await prisma.universe.update({
+      const result = await prisma.product.update({
         where: { id: parseInt(id) },
         data: req.body,
       });
-      res.status(200).json({ message: 'Universe succesfully updated', result });
+      res.status(200).json({ message: 'Product succesfully updated', result });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
-}
+  },
+};

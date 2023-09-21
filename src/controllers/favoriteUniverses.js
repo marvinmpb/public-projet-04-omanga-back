@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -132,7 +131,4 @@ module.exports = {
       res.status(500).json({ message: "Une erreur est survenue lors de la suppression de l'univers des favoris" });
     }
   },
-
-
-
 }

@@ -1,40 +1,21 @@
+const universesController = require('../controllers/universes');
+const { Router } = require('express');
+const router = Router();
+
 // RECUP TOUS LES UNIVERS
-router.get(`/universe`, async (req, res) => {
-  try {
-    const result = await prisma.universe.findMany()
-    res.json(result)
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Une erreur est survenue lors de la récupération des univers" });
-  }
-})
+router.get(`/`, universesController.getAllUniverses)
 
 // RECUP UN UNIVERS
-router.get(`/universe/:id`, async (req, res) => {
-  try {
-    const result = await prisma.universe.findUnique({
-      where: {
-        id: parseInt(req.params.id)
-      }
-    })
-    res.json(result)
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Une erreur est survenue lors de la récupération de l'univers" });
-  }
-})
+router.get(`/:id`, universesController.getOneUniverse)
 
 // CREER UN UNIVERS
-router.post(`/universe`, async (req, res) => {
-  try {
-    const result = await prisma.universe.create({
-      data: req.body
-    })
-    res.json(result)
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Une erreur est survenue lors de la création de l'univers" });
-  }
-})
+router.post(`/`, universesController.createUniverse)
+
+// MODIFIER UN UNIVERS
+router.put(`/:id`, universesController.updateOneUniverse)
+
+// SUPPRIMER UN UNIVERS
+router.delete(`/:id`, universesController.deleteOneUniverse)
+
 
 module.exports = router;

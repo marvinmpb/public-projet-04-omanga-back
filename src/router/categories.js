@@ -1,17 +1,10 @@
 // const asyncHelper = require('../helpers/async');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient()
 const categoriesController = require('../controllers/categories');
 const { Router } = require('express');
 const router = Router();
 
-
-
-
 // RECUP TOUTES LES CATÉGORIES
 router.get(`/`, categoriesController.getAllCategories)
-
 
 // RECUP UNE CATÉGORIE
 router.get(`/:id`, categoriesController.getOneCategory)
