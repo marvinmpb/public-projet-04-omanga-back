@@ -1,21 +1,13 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
-
-const router = express();
-const prisma = new PrismaClient()
+const { Router } = require('express');
+const router = Router();
 
 router.use(express.json())
 
-router.get(`/category`, async (req, res) => {
-  const result = await prisma.category.findMany()
-  res.json(result)
-})
-
-router.post(`/category`, async (req, res) => {
-  const result = await prisma.category.create({
-    data: req.body
-  })
-  res.json(result)
-})
+router.use('/categories', require('./categories'));
+router.use('/universes', require('./universes'));
+router.use('/products', require('./products'));
+router.use('/orders', require('./orders'));
+router.use('/users', require('./users'));
 
 module.exports = router;
