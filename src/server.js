@@ -1,9 +1,9 @@
 const http = require('http');
 const app = require('./app');
-const router = require('./router/index')
-require('dotenv').config()
+const router = require('./router/index');
+require('dotenv').config();
 
-const port = (process.env.PORT || '5000');
+const port = process.env.PORT || '5000';
 
 app.set('port', port);
 
@@ -29,7 +29,7 @@ const errorHandler = (error) => {
 
 const server = http.createServer(app);
 
-app.use(router)
+app.use(router);
 
 server.on('error', errorHandler);
 
