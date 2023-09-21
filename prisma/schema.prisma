@@ -51,8 +51,6 @@ model Product {
   category_id Int
   universe    Universe @relation(fields: [universe_id], references: [id])
   universe_id Int
-
-  @@unique([category_id, universe_id])
 }
 
 model Order {
@@ -64,8 +62,6 @@ model Order {
   product_id       Int
   user             User     @relation(fields: [user_id], references: [id])
   user_id          Int
-
-  @@unique([user_id, product_id])
 }
 
 model Category {
