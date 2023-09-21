@@ -48,11 +48,11 @@ module.exports = {
       }
 
       // Vérifiez si l'univers existe
-      const category = await prisma.category.findUnique({
+      const universe = await prisma.universe.findUnique({
         where: { id: universe_id },
       });
 
-      if (!category) {
+      if (!universe) {
         return res.status(404).json({ message: "Univers introuvable" });
       }
 
@@ -99,7 +99,7 @@ module.exports = {
       }
 
       // Vérifiez si l'univers existe
-      const category = await prisma.category.findUnique({
+      const universe = await prisma.universe.findUnique({
         where: { id: universe_id },
       });
 
@@ -108,7 +108,7 @@ module.exports = {
       }
 
       // Vérifiez si l'utilisateur a ajouté cet univers à ses favoris
-      const favorite = await prisma.favoriteCategory.findFirst({
+      const favorite = await prisma.favoriteUniverse.findFirst({
         where: {
           user_id,
           universe_id,
