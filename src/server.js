@@ -1,5 +1,6 @@
 const http = require('http');
 const app = require('./app');
+const cors = require("cors");
 const router = require('./router/index')
 require('dotenv').config()
 
@@ -28,6 +29,8 @@ const errorHandler = (error) => {
 };
 
 const server = http.createServer(app);
+
+app.use(cors());
 
 app.use(router)
 
