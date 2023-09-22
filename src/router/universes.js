@@ -1,16 +1,17 @@
+const asyncHelper = require('../helpers/async');
 const universesController = require('../controllers/universes');
 const { Router } = require('express');
 const router = Router();
 
-router.get(`/`, universesController.getAllUniverses)
+router.get(`/`, asyncHelper(universesController.getAllUniverses))
 
-router.get(`/:id`, universesController.getOneUniverse)
+router.get(`/:id`, asyncHelper(universesController.getOneUniverse))
 
-router.post(`/`, universesController.createUniverse)
+router.post(`/`, asyncHelper(universesController.createUniverse))
 
-router.put(`/:id`, universesController.updateOneUniverse)
+router.put(`/:id`, asyncHelper(universesController.updateOneUniverse))
 
-router.delete(`/:id`, universesController.deleteOneUniverse)
+router.delete(`/:id`, asyncHelper(universesController.deleteOneUniverse))
 
 
 module.exports = router;
