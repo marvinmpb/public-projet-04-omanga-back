@@ -3,7 +3,20 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllProducts: async (req, res) => {
-    const result = await prisma.product.findMany();
+    const result = await prisma.product.findMany({
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        universe: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     res.status(200).json(result);
   },
   getOneProduct: async (req, res) => {
