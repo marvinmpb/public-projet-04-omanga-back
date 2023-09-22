@@ -1,21 +1,16 @@
-
+const asyncHelper = require('../helpers/async');
 const ordersController = require('../controllers/orders');
 const { Router } = require('express');
 const router = Router();
 
-// RECUP TOUTES LES ORDERS
-router.get(`/`, ordersController.getAllOrders)
+router.get(`/`, asyncHelper(ordersController.getAllOrders))
 
-// RECUP UNE ORDER
-router.get(`/:id`, ordersController.getOneOrder)
+router.get(`/:id`, asyncHelper(ordersController.getOneOrder))
 
-// CREER UNE ORDER
-router.post(`/`, ordersController.createOrder)
+router.post(`/`, asyncHelper(ordersController.createOrder))
 
-// SUPPRIMER UNE ORDER
-router.delete(`/:id`, ordersController.deleteOneOrder)
+router.delete(`/:id`, asyncHelper(ordersController.deleteOneOrder))
 
-// MODIFIER UNE ORDER
-router.put(`/:id`, ordersController.updateOneOrder)
+router.put(`/:id`, asyncHelper(ordersController.updateOneOrder))
 
 module.exports = router;

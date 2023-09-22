@@ -1,21 +1,18 @@
-// const asyncHelper = require('../helpers/async');
+const asyncHelper = require('../helpers/async');
 const categoriesController = require('../controllers/categories');
+const validation = require('../middlewares/validate');
+const schema = require('../schemas/categories');
 const { Router } = require('express');
 const router = Router();
 
-// RECUP TOUTES LES CATÉGORIES
-router.get(`/`, categoriesController.getAllCategories)
+router.get(`/`, asyncHelper(categoriesController.getAllCategories))
 
-// RECUP UNE CATÉGORIE
-router.get(`/:id`, categoriesController.getOneCategory)
+router.get(`/:id`, asyncHelper(categoriesController.getOneCategory))
 
-// CREER UNE CATÉGORIE
-router.post(`/`, categoriesController.createCategory)
+router.post(`/`, validation(schema.create, 'body'), asyncHelper(categoriesController.createCategory))
 
-// SUPPRIMER UNE CATÉGORIE
-router.delete(`/:id`, categoriesController.deleteOneCategory)
+router.delete(`/:id`, asyncHelper(categoriesController.deleteOneCategory))
 
-// MODIFIER UNE CATÉGORIE
-router.put(`/:id`, categoriesController.updateOneCategory)
+router.put(`/:id`, validation(schema.create, 'body'), asyncHelper(categoriesController.updateOneCategory))
 
 module.exports = router;
