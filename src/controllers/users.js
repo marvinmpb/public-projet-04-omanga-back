@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const APIError = require('../errors/APIError');
 const SECRET = process.env.JWT_SECRET;
 
 module.exports = {
@@ -16,6 +17,11 @@ module.exports = {
         password: cryptedPassword,
       }
     })
+
+    // TODO: catch error and return explicit message before pri
+    if (!user) {
+      throw new APIError({ code: 400, message: 'Un utilisateur avec cet email existe déjà' })
+    }
 
     // Gérener un token
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
@@ -33,8 +39,7 @@ module.exports = {
     const valid = await bcrypt.compare(req.body.password, user.password);
 
     if (!user || !valid) {
-      res.status(401).json({ message: 'La combinaison email/mot de passe est incorrecte' });
-      return;
+      throw new APIError({ code: 401, message: 'Email ou mot de passe incorrect' })
     }
 
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
