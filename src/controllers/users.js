@@ -43,9 +43,8 @@ module.exports = {
         return;
       }
 
-      // Gérener un token
       const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
-      // Envoyer le token au client
+
       res.json({ token });
     } catch (error) {
       console.error(error);
@@ -65,8 +64,9 @@ module.exports = {
     try {
       const result = await prisma.user.findUnique({
         where: {
-          id: parseInt(req.params.id)
-        }
+          id: parseInt(req.params.id),
+        },
+        include: { orders: true, favorite_categories: true, favorite_universes: true }
       })
       res.json(result)
     } catch (error) {

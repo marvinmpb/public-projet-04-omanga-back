@@ -6,7 +6,6 @@ module.exports = {
     try {
       const user_id = parseInt(req.params.userId);
 
-      // Vérifiez d'abord si l'utilisateur existe
       const user = await prisma.user.findUnique({
         where: { id: user_id },
       });
@@ -15,7 +14,6 @@ module.exports = {
         return res.status(404).json({ message: "Utilisateur introuvable" });
       }
 
-      // Récupérez les catégories favorites de l'utilisateur en utilisant une jointure avec la table favoriteCategory
       const favoriteCategories = await prisma.favoriteCategory.findMany({
         where: {
           user_id,
@@ -37,7 +35,6 @@ module.exports = {
       const user_id = parseInt(req.params.userId);
       const category_id = parseInt(req.params.categoryId);
 
-      // Vérifiez d'abord si l'utilisateur existe
       const user = await prisma.user.findUnique({
         where: { id: user_id },
       });
@@ -46,7 +43,6 @@ module.exports = {
         return res.status(404).json({ message: "Utilisateur introuvable" });
       }
 
-      // Vérifiez si la catégorie existe
       const category = await prisma.category.findUnique({
         where: { id: category_id },
       });
@@ -55,7 +51,6 @@ module.exports = {
         return res.status(404).json({ message: "Catégorie introuvable" });
       }
 
-      // Vérifiez si l'utilisateur a déjà ajouté cette catégorie à ses favoris
       const existingFavorite = await prisma.favoriteCategory.findFirst({
         where: {
           user_id,
@@ -67,7 +62,6 @@ module.exports = {
         return res.status(400).json({ message: "Cette catégorie est déjà dans les favoris de l'utilisateur" });
       }
 
-      // Ajoutez la catégorie aux favoris de l'utilisateur
       const favorite = await prisma.favoriteCategory.create({
         data: {
           user_id,
@@ -88,7 +82,6 @@ module.exports = {
       const user_id = parseInt(req.params.userId);
       const category_id = parseInt(req.params.categoryId);
 
-      // Vérifiez d'abord si l'utilisateur existe
       const user = await prisma.user.findUnique({
         where: { id: user_id },
       });
@@ -97,7 +90,6 @@ module.exports = {
         return res.status(404).json({ message: "Utilisateur introuvable" });
       }
 
-      // Vérifiez si la catégorie existe
       const category = await prisma.category.findUnique({
         where: { id: category_id },
       });
@@ -106,7 +98,6 @@ module.exports = {
         return res.status(404).json({ message: "Catégorie introuvable" });
       }
 
-      // Vérifiez si l'utilisateur a ajouté cette catégorie à ses favoris
       const favorite = await prisma.favoriteCategory.findFirst({
         where: {
           user_id,
@@ -118,14 +109,13 @@ module.exports = {
         return res.status(404).json({ message: "Cette catégorie n'est pas dans les favoris de l'utilisateur" });
       }
 
-      // Supprimez l'entrée de la table favoriteCategory
       await prisma.favoriteCategory.delete({
         where: {
           id: favorite.id,
         },
       });
 
-      res.status(204).end(); // Réponse avec le code de statut 204 (Aucun contenu)
+      res.status(204).end();
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Une erreur est survenue lors de la suppression de la catégorie des favoris" });

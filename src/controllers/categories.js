@@ -16,6 +16,7 @@ module.exports = {
       const id = req.params.id;
       const result = await prisma.category.findUnique({
         where: { id: parseInt(id) },
+        include: { products: true },
       });
       res.status(200).json(result);
     } catch (error) {
