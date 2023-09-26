@@ -1,5 +1,6 @@
 const asyncHelper = require('../helpers/async');
 const usersController = require('../controllers/users');
+const authenticate = require('../middlewares/authenticate');
 const { Router } = require('express');
 const router = Router();
 
@@ -17,7 +18,7 @@ router.post(`/login`, asyncHelper(usersController.login))
 router.get(`/`, asyncHelper(usersController.getAllUsers))
 
 // RECUP UN UTILISATEUR
-router.get(`/:id`, asyncHelper(usersController.getOneUser))
+router.get(`/:id`, authenticate, asyncHelper(usersController.getOneUser))
 
 // MODIFIER UN UTILISATEUR
 router.put(`/:id`, asyncHelper(usersController.updateOneUser))
