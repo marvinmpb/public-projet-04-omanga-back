@@ -1,9 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const APIError = require('../errors/APIError');
 const SECRET = process.env.JWT_SECRET;
+const { v4: uuidv4 } = require('uuid');
+const { generateTokens } = require('../utils/jwt');
+const { addRefreshTokenToWhitelist } = require('../auth/auth.services');
 
 module.exports = {
   createOne: async (req, res) => {
@@ -23,10 +26,11 @@ module.exports = {
       throw new APIError({ code: 400, message: 'Un utilisateur avec cet email existe déjà' })
     }
 
-    // Gérener un token
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
-    // Envoyer le token au client
-    return res.json({ token });
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(user, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: user.id });
+
+    res.status(201).json({ message: 'Utilisateur créé', user, accessToken, refreshToken });
   },
 
   login: async (req, res) => {
@@ -40,11 +44,25 @@ module.exports = {
 
     if (!user || !valid) {
       throw new APIError({ code: 401, message: 'Email ou mot de passe incorrect' })
+    };
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: req.body.email
+      }
+    });
+
+    if (!existingUser) {
+      res.status(403);
+      throw new Error('Invalid login credentials.');
     }
 
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(existingUser, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: existingUser.id });
 
-    res.json({ token });
+    res.status(201).json({ message: 'Utilisateur connecté', user: existingUser, accessToken, refreshToken });
+
   },
 
   getAllUsers: async (req, res) => {
