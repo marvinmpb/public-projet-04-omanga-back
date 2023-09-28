@@ -1,13 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const MINUTES = 3;
 
 module.exports = {
   resetPassword: async (req, res) => {
     const user = await prisma.user.findUnique({
-      where: { resetPassword: req.params.token },
+      where: { resetPassword: req.body.token },
     });
 
     const now = new Date().valueOf();
@@ -19,7 +17,8 @@ module.exports = {
 
       const salt = await bcrypt.genSalt(10);
       const hashed = await bcrypt.hash(req.body.password, salt);
-      const addResetToken = await prisma.user.update({
+
+      await prisma.user.update({
         where: {
           email: user.email,
         },
@@ -30,6 +29,8 @@ module.exports = {
         },
       });
       return res.json({ message: 'Password updated' });
+    } else {
+      return res.status(401).json({ message: 'Token expired' });
     }
   }
 };

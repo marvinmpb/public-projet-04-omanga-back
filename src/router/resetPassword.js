@@ -3,6 +3,6 @@ const resetPasswordController = require('../controllers/resetPassword');
 const { Router } = require('express');
 const router = Router();
 
-router.patch(`/:token`, asyncHelper(resetPasswordController.resetPassword))
+router.patch(`/`, asyncHelper(resetPasswordController.resetPassword))
 
 module.exports = router;

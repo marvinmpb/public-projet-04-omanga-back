@@ -1,7 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
-const MINUTES = 3;
+const bodyParser = require('body-parser');
+const MINUTES = 10;
+const express = require('express');
+const { SendMail } = require('../utils/sendMail');
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 module.exports = {
   forgotPassword: async (req, res) => {
@@ -14,7 +20,6 @@ module.exports = {
     }
 
     const token = jwt.sign({ id: getUser.id }, process.env.JWT_RESET_SECRET, { expiresIn: '10m' });
-    console.log(getUser)
 
     const addResetToken = await prisma.user.update({
       where: { id: getUser.id },
@@ -27,6 +32,10 @@ module.exports = {
     if (!addResetToken) {
       return res.status(500).json({ message: 'Internal server error' });
     }
-    return res.status(200).json({ message: 'Reset token added', token });
+
+    // send email here
+    SendMail(getUser, token);
+
+    return res.status(200).json({ message: 'Sended email' });
   }
 };

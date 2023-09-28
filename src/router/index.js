@@ -15,7 +15,7 @@ router.use('/users', require('./userFavoriteCategories'));
 router.use('/users', require('./userFavoriteUniverses'));
 router.use('/refreshToken', require('./refreshToken'));
 router.use('/forgot-password', require('./forgotPassword'));
-router.use('/reset-password/', require('./resetPassword'));
+router.use('/reset-password', require('./resetPassword'));
 
 
 // error handler
