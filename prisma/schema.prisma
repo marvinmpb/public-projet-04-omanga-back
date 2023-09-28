@@ -11,20 +11,22 @@ datasource db {
 }
 
 model User {
-  id                  Int                @id @default(autoincrement())
-  firstname           String             @db.VarChar(255)
-  lastname            String             @db.VarChar(255)
-  email               String             @unique @db.VarChar(255)
-  password            String             @db.VarChar(255)
-  image_url           String?            @db.VarChar(500)
-  role                Role               @default(USER)
-  city                String?            @db.VarChar(255)
-  zip_code            String?            @db.VarChar(15)
-  refresh_token       RefreshToken[]
-  reviews             Review[]
-  orders              Order[]
-  favorite_categories FavoriteCategory[]
-  favorite_universes  FavoriteUniverse[]
+  id                   Int                @id @default(autoincrement())
+  firstname            String             @db.VarChar(255)
+  lastname             String             @db.VarChar(255)
+  email                String             @unique @db.VarChar(255)
+  password             String             @db.VarChar(255)
+  image_url            String?            @db.VarChar(500)
+  role                 Role               @default(USER)
+  city                 String?            @db.VarChar(255)
+  zip_code             String?            @db.VarChar(15)
+  refresh_token        RefreshToken[]
+  reviews              Review[]
+  orders               Order[]
+  favorite_categories  FavoriteCategory[]
+  favorite_universes   FavoriteUniverse[]
+  resetPassword        String?            @unique
+  resetPasswordExpires BigInt?            @db.BigInt
 }
 
 model Review {
