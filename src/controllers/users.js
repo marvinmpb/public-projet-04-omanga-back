@@ -1,15 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
 const APIError = require('../errors/APIError');
-const SECRET = process.env.JWT_SECRET;
 const { v4: uuidv4 } = require('uuid');
 const { generateTokens } = require('../utils/jwt');
 const { addRefreshTokenToWhitelist } = require('../auth/auth.services');
+const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   createOne: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'users',
+      })
+      req.body.image_url = image.secure_url;
+    }
+
     const salt = await bcrypt.genSalt(10);
 
     const cryptedPassword = await bcrypt.hash(req.body.password, salt);
@@ -86,6 +92,13 @@ module.exports = {
 
   },
   updateOneUser: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'users',
+      })
+      req.body.image_url = image.secure_url;
+    }
+
     const result = await prisma.user.update({
       where: {
         id: parseInt(req.params.id)
