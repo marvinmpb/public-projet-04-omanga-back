@@ -71,6 +71,10 @@ module.exports = {
 
   },
 
+  logout: async (req, res) => {
+    // TODO
+  },
+
   getAllUsers: async (req, res) => {
     const result = await prisma.user.findMany()
     res.status(200).json(result)
@@ -99,6 +103,12 @@ module.exports = {
       req.body.image_url = image.secure_url;
     }
 
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const cryptedPassword = await bcrypt.hash(req.body.password, salt);
+      req.body.password = cryptedPassword;
+    }
+
     const result = await prisma.user.update({
       where: {
         id: parseInt(req.params.id)
@@ -114,6 +124,14 @@ module.exports = {
         id: parseInt(req.params.id)
       }
     })
+
+    // TODO
+    // delete refresh tokens belonging to user
+    // await prisma.refreshToken.deleteMany({
+    //   where: {
+    //     user_id: parseInt(req.params.id)
+    //   }
+    // })
 
     res.status(204).json();
   },
