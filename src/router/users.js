@@ -11,7 +11,7 @@ router.post(`/signup`, asyncHelper(usersController.createOne));
 router.post(`/login`, asyncHelper(usersController.login))
 
 // DÉCONNEXION
-//router.post(`/logout`, asyncHelper(usersController.logout))
+router.get(`/logout`, asyncHelper(usersController.logout))
 
 // RECUP TOUS LES UTILISATEURS
 // !!! CETTE ROUTE NE DOIT ËTRE ACCESSIBLE QUE PAR UN ADMIN
