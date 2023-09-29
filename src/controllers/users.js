@@ -71,10 +71,6 @@ module.exports = {
 
   },
 
-  logout: async (req, res) => {
-    // TODO
-  },
-
   getAllUsers: async (req, res) => {
     const result = await prisma.user.findMany()
     res.status(200).json(result)

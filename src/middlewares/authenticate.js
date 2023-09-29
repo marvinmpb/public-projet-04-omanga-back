@@ -14,11 +14,11 @@ module.exports = (req, res, next) => {
     req.payload = payload;
   } catch (err) {
     console.log(err);
-    res.status(401);
-    if (err.name === 'TokenExpiredError') {
-      throw new Error(err.name);
+    if (err instanceof jwt.TokenExpiredError) {
+      res.status(401);
+      throw new Error('Token expired');
     }
-    throw new Error('Un-Authorized');
+    res.status(401);
   }
 
   next();
