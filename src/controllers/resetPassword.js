@@ -28,6 +28,17 @@ module.exports = {
           resetPasswordExpires: null,
         },
       });
+
+      // revoke refreshtokens
+      await prisma.refreshToken.updateMany({
+        where: {
+          user_id: user.id,
+        },
+        data: {
+          revoked: true,
+        },
+      });
+
       return res.json({ message: 'Password updated' });
     } else {
       return res.status(401).json({ message: 'Token expired' });
