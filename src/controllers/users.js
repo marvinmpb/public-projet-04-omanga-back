@@ -32,6 +32,11 @@ module.exports = {
       throw new APIError({ code: 400, message: 'Un utilisateur avec cet email existe déjà' })
     }
 
+    // exclude password, resetPassword & resetPasswordExpires from response
+    delete user.password;
+    delete user.resetPassword;
+    delete user.resetPasswordExpires;
+
     const jti = uuidv4();
     const { accessToken, refreshToken } = generateTokens(user, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: user.id });
@@ -63,6 +68,10 @@ module.exports = {
       throw new Error('Invalid login credentials.');
     }
 
+    delete existingUser.password;
+    delete existingUser.resetPassword;
+    delete existingUser.resetPasswordExpires;
+
     const jti = uuidv4();
     const { accessToken, refreshToken } = generateTokens(existingUser, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: existingUser.id });
@@ -73,6 +82,12 @@ module.exports = {
 
   getAllUsers: async (req, res) => {
     const result = await prisma.user.findMany()
+    // exclude password, resetPassword and resetPasswordExpires from response
+    result.map(user => {
+      delete user.password;
+      delete user.resetPassword;
+      delete user.resetPasswordExpires;
+    })
     res.status(200).json(result)
   },
 
@@ -87,6 +102,10 @@ module.exports = {
     if (!result) {
       return res.status(404).json({ message: "Utilisateur introuvable" });
     }
+
+    delete result.password;
+    delete result.resetPassword;
+    delete result.resetPasswordExpires;
 
     res.status(200).json(result);
 
@@ -111,6 +130,10 @@ module.exports = {
       },
       data: req.body
     })
+
+    delete result.password;
+    delete result.resetPassword;
+    delete result.resetPasswordExpires;
 
     res.status(200).json({ message: 'Utilisateur mis à jour', result });
   },
