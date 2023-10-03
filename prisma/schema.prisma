@@ -35,9 +35,9 @@ model Review {
   content    String   @db.VarChar(500)
   published  Boolean  @default(false)
   rating     Int
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    Int
-  product    Product  @relation(fields: [product_id], references: [id])
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
   product_id Int
 }
 
@@ -50,9 +50,9 @@ model Product {
   price       Float
   orders      Order[]
   reviews     Review[]
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
   category_id Int
-  universe    Universe @relation(fields: [universe_id], references: [id])
+  universe    Universe @relation(fields: [universe_id], references: [id], onDelete: Cascade)
   universe_id Int
 }
 
@@ -61,9 +61,9 @@ model Order {
   order_date       DateTime @default(now())
   archeving_date   DateTime @updatedAt
   product_quantity Int
-  product          Product  @relation(fields: [product_id], references: [id])
+  product          Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
   product_id       Int
-  user             User     @relation(fields: [user_id], references: [id])
+  user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id          Int
 }
 
@@ -87,9 +87,9 @@ model Universe {
 
 model FavoriteCategory {
   id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
   category_id Int
 
   @@unique([user_id, category_id])
@@ -97,9 +97,9 @@ model FavoriteCategory {
 
 model FavoriteUniverse {
   id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
-  universe    Universe @relation(fields: [universe_id], references: [id])
+  universe    Universe @relation(fields: [universe_id], references: [id], onDelete: Cascade)
   universe_id Int
 
   @@unique([user_id, universe_id])
@@ -108,7 +108,7 @@ model FavoriteUniverse {
 model RefreshToken {
   id          String   @id @unique @default(uuid())
   hashedToken String
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
   revoked     Boolean  @default(false)
   created_at  DateTime @default(now())
