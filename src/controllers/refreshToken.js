@@ -1,5 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
-const { findRefreshTokenById, deleteRefreshToken } = require('../auth/auth.services');
+const {
+  findRefreshTokenById,
+  deleteRefreshToken
+} = require('../auth/auth.services');
 const prisma = new PrismaClient();
 
 module.exports = {
