@@ -3,7 +3,6 @@ const MAIL_PSWRD = process.env.MAIL_PSWRD;
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 
 function SendMail(getUser, token) {
-  console.log('dedans')
   const transporter = nodemailer.createTransport({
     port: 465,               // true for 465, false for other ports
     host: "smtp.gmail.com",
