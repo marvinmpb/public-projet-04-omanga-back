@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllFavoriteUniverses: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
 
     // Vérifier d'abord si l'utilisateur existe
     const user = await prisma.user.findUnique({
@@ -28,7 +28,7 @@ module.exports = {
   },
 
   addOneFavoriteUniverse: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const universe_id = parseInt(req.params.universeId);
 
     const user = await prisma.user.findUnique({
@@ -71,7 +71,7 @@ module.exports = {
 
 
   removeOneFavoriteUniverse: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const universe_id = parseInt(req.params.universeId);
 
     const user = await prisma.user.findUnique({

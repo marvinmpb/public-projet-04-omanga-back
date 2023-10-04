@@ -11,12 +11,12 @@ module.exports = (req, res, next) => {
   try {
     const token = authorization.split(' ')[1];
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(payload.role !== 'ADMIN');
 
-    // check if the user is the one trying to access the resource
-    if ((payload.role !== 'ADMIN') && (payload.id !== parseInt(req.params.id))) {
-      return res.status(401).json({ message: 'Forbidden' });
+    // check if the user is an admin
+    if (payload.role !== 'ADMIN') {
+      return res.status(401).json({ message: 'Forbidden, Admin only' });
     }
+
     req.payload = payload;
   } catch (err) {
     console.log(err);
