@@ -5,7 +5,7 @@ function generateAccessToken(user) {
 }
 
 function generateRefreshToken(user, jti) {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '10h' });
 }
 
 function generateTokens(user, jti) {
