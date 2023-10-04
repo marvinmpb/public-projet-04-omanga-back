@@ -12,6 +12,8 @@ module.exports = (req, res, next) => {
     const token = authorization.split(' ')[1];
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
+    console.log(payload.id, req)
+
     // check if the user is the one trying to access the resource
     if (payload.id !== parseInt(req.params.id)) {
       res.status(403).json({ error: 'Forbidden' });
