@@ -10,7 +10,7 @@ module.exports = {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      return res.status(400).json({ message: 'Token invalide' });
+      return res.status(400).json({ message: 'Invalid token' });
     }
 
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
