@@ -16,7 +16,7 @@ module.exports = {
     });
 
     if (!result) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     res.status(200).json(result);
@@ -61,7 +61,7 @@ module.exports = {
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const result = await prisma.category.update({

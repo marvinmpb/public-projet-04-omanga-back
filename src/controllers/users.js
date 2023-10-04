@@ -29,7 +29,7 @@ module.exports = {
 
     // TODO: catch error and return explicit message before pri
     if (!user) {
-      throw new APIError({ code: 400, message: 'Un utilisateur avec cet email existe déjà' })
+      throw new APIError({ code: 400, message: 'User with this email already exists' })
     }
 
     // exclude password, resetPassword & resetPasswordExpires from response
@@ -41,7 +41,7 @@ module.exports = {
     const { accessToken, refreshToken } = generateTokens(user, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: user.id });
 
-    res.status(201).json({ message: 'Utilisateur créé', user, accessToken, refreshToken });
+    res.status(201).json({ message: 'User created', user, accessToken, refreshToken });
   },
 
   login: async (req, res) => {
@@ -54,7 +54,7 @@ module.exports = {
     const valid = await bcrypt.compare(req.body.password, user.password);
 
     if (!user || !valid) {
-      throw new APIError({ code: 401, message: 'Email ou mot de passe incorrect' })
+      throw new APIError({ code: 401, message: 'Invalid email or password' })
     };
 
     const existingUser = await prisma.user.findUnique({
@@ -76,7 +76,7 @@ module.exports = {
     const { accessToken, refreshToken } = generateTokens(existingUser, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: existingUser.id });
 
-    res.status(201).json({ message: 'Utilisateur connecté', user: existingUser, accessToken, refreshToken });
+    res.status(201).json({ message: 'Connected user', user: existingUser, accessToken, refreshToken });
 
   },
 
@@ -100,7 +100,7 @@ module.exports = {
     })
 
     if (!result) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     delete result.password;
@@ -135,7 +135,7 @@ module.exports = {
     delete result.resetPassword;
     delete result.resetPasswordExpires;
 
-    res.status(200).json({ message: 'Utilisateur mis à jour', result });
+    res.status(200).json({ message: 'User succesfully updated', result });
   },
   deleteOneUser: async (req, res) => {
     const result = await prisma.user.delete({
