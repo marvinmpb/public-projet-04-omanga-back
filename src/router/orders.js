@@ -14,6 +14,6 @@ router.post(`/`, authenticate, validation(schema.create, 'body'), asyncHelper(or
 
 router.delete(`/:id`, authenticate, asyncHelper(ordersController.deleteOneOrder))
 
-router.put(`/:id`, authenticate, validation(schema.create, 'body'), asyncHelper(ordersController.updateOneOrder))
+router.put(`/:id`, authenticate, validation(schema.update, 'body'), asyncHelper(ordersController.updateOneOrder))
 
 module.exports = router;

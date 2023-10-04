@@ -14,6 +14,6 @@ router.post(`/`, adminCheck, validation(schema.create, 'body'), asyncHelper(prod
 
 router.delete(`/:id`, adminCheck, asyncHelper(productsController.deleteOneProduct))
 
-router.put(`/:id`, adminCheck, validation(schema.create, 'body'), asyncHelper(productsController.updateOneProduct))
+router.put(`/:id`, adminCheck, validation(schema.update, 'body'), asyncHelper(productsController.updateOneProduct))
 
 module.exports = router;

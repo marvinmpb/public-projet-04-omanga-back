@@ -12,7 +12,7 @@ router.get(`/:id`, asyncHelper(universesController.getOneUniverse))
 
 router.post(`/`, adminCheck, validation(schema.create, 'body'), asyncHelper(universesController.createUniverse))
 
-router.put(`/:id`, adminCheck, validation(schema.create, 'body'), asyncHelper(universesController.updateOneUniverse))
+router.put(`/:id`, adminCheck, validation(schema.update, 'body'), asyncHelper(universesController.updateOneUniverse))
 
 router.delete(`/:id`, adminCheck, asyncHelper(universesController.deleteOneUniverse))
 

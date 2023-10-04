@@ -14,6 +14,6 @@ router.post(`/`, adminCheck, validation(schema.create, 'body'), asyncHelper(cate
 
 router.delete(`/:id`, adminCheck, asyncHelper(categoriesController.deleteOneCategory))
 
-router.put(`/:id`, adminCheck, validation(schema.create, 'body'), asyncHelper(categoriesController.updateOneCategory))
+router.put(`/:id`, adminCheck, validation(schema.update, 'body'), asyncHelper(categoriesController.updateOneCategory))
 
 module.exports = router;
