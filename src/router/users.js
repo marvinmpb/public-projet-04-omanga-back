@@ -18,9 +18,9 @@ router.get(`/`, asyncHelper(usersController.getAllUsers))
 router.get(`/:id`, authenticate, asyncHelper(usersController.getOneUser))
 
 // MODIFIER UN UTILISATEUR
-router.put(`/:id`, asyncHelper(usersController.updateOneUser))
+router.put(`/:id`, authenticate, asyncHelper(usersController.updateOneUser))
 
 // SUPPRIMER UN UTILISATEUR
-router.delete(`/:id`, asyncHelper(usersController.deleteOneUser))
+router.delete(`/:id`, authenticate, asyncHelper(usersController.deleteOneUser))
 
 module.exports = router;
