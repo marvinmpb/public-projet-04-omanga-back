@@ -29,7 +29,7 @@ module.exports = {
   },
 
   addReview: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const product_id = parseInt(req.params.productId);
     const { rating, content } = req.body;
 
@@ -63,7 +63,7 @@ module.exports = {
   },
 
   deleteOneReview: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const review_id = parseInt(req.params.reviewId);
 
     const user = await prisma.user.findUnique({
@@ -97,7 +97,7 @@ module.exports = {
   },
 
   updateOneReview: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const review_id = parseInt(req.params.reviewId);
     const { rating, content } = req.body;
 

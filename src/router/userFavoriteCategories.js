@@ -4,11 +4,11 @@ const { Router } = require('express');
 const authenticate = require('../middlewares/authenticate');
 const router = Router();
 
-router.post('/:userId/favorite/categories/:categoryId', authenticate, asyncHelper(favoriteCategoriesController.addOneFavoriteCategory));
+router.post('/:id/favorite/categories/:categoryId', authenticate, asyncHelper(favoriteCategoriesController.addOneFavoriteCategory));
 
-router.get('/:userId/favorite/categories', authenticate, asyncHelper(favoriteCategoriesController.getAllFavoriteCategories));
+router.get('/:id/favorite/categories', authenticate, asyncHelper(favoriteCategoriesController.getAllFavoriteCategories));
 
-router.delete('/:userId/favorite/categories/:categoryId', authenticate, asyncHelper(favoriteCategoriesController.removeOneFavoriteCategory));
+router.delete('/:id/favorite/categories/:categoryId', authenticate, asyncHelper(favoriteCategoriesController.removeOneFavoriteCategory));
 
 
 module.exports = router;
