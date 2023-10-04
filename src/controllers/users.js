@@ -144,14 +144,6 @@ module.exports = {
       }
     })
 
-    // TODO
-    // delete refresh tokens belonging to user
-    // await prisma.refreshToken.deleteMany({
-    //   where: {
-    //     user_id: parseInt(req.params.id)
-    //   }
-    // })
-
     res.status(204).json();
   },
 };
