@@ -12,7 +12,7 @@ router.get('/products/:productId', asyncHelper(reviewsController.getAllReviewsBy
 
 router.get('/reviews/:reviewId', asyncHelper(reviewsController.getOneReview));
 
-router.put('/users/:id/reviews/:reviewId', authenticate, validation(schema.create, 'body'), asyncHelper(reviewsController.updateOneReview));
+router.put('/users/:id/reviews/:reviewId', authenticate, validation(schema.update, 'body'), asyncHelper(reviewsController.updateOneReview));
 
 router.delete('/users/:id/reviews/:reviewId', authenticate, asyncHelper(reviewsController.deleteOneReview));
 
