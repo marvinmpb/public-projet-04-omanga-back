@@ -21,7 +21,7 @@ module.exports = {
     });
 
     if (!review) {
-      return res.status(404).json({ message: "Review introuvable" });
+      return res.status(404).json({ message: "Review not found" });
     }
 
     res.status(200).json(review);
@@ -38,7 +38,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const product = await prisma.product.findUnique({
@@ -46,7 +46,7 @@ module.exports = {
     });
 
     if (!product) {
-      return res.status(404).json({ message: "Produit introuvable" });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     const review = await prisma.review.create({
@@ -71,7 +71,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const review = await prisma.review.findUnique({
@@ -79,11 +79,11 @@ module.exports = {
     });
 
     if (!review) {
-      return res.status(404).json({ message: "Review introuvable" });
+      return res.status(404).json({ message: "Review not found" });
     }
 
     if (review.user_id !== user_id) {
-      return res.status(403).json({ message: "Vous n'êtes pas autorisé à supprimer cette review" });
+      return res.status(403).json({ message: "You are not authorised to delete this review" });
     }
 
     await prisma.review.delete({
@@ -106,7 +106,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const review = await prisma.review.findUnique({
@@ -114,11 +114,11 @@ module.exports = {
     });
 
     if (!review) {
-      return res.status(404).json({ message: "Review introuvable" });
+      return res.status(404).json({ message: "Review not found" });
     }
 
     if (review.user_id !== user_id) {
-      return res.status(403).json({ message: "Vous n'êtes pas autorisé à modifier cette review" });
+      return res.status(403).json({ message: "You are not authorised to update this review" });
     }
 
     const updatedReview = await prisma.review.update({
