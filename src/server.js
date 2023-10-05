@@ -37,7 +37,14 @@ app.use(router)
 
 server.on('error', errorHandler);
 
-mockData.createUsers();
+// mockData.createUsers();
+// mockData.createCategories();
+// mockData.createUniverses();
+// mockData.createProducts();
+// mockData.createReviews();
+// mockData.createOrders();
+// mockData.createFavoriteCategories();
+// mockData.createFavoriteUniverses();
 
 server.on('listening', () => {
   const address = server.address();
