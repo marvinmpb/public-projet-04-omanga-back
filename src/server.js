@@ -1,8 +1,9 @@
 const http = require('http');
 const app = require('./app');
 const cors = require("cors");
-const router = require('./router/index')
-require('dotenv').config()
+const router = require('./router/index');
+require('dotenv').config();
+const mockData = require('./mockData')
 
 const port = (process.env.PORT || '5000');
 
@@ -35,6 +36,8 @@ app.use(cors());
 app.use(router)
 
 server.on('error', errorHandler);
+
+mockData.createUsers();
 
 server.on('listening', () => {
   const address = server.address();
