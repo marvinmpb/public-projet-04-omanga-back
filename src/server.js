@@ -37,10 +37,11 @@ app.use(router)
 
 server.on('error', errorHandler);
 
-// mockData.createUsers();
+// execute in this order this to create mock data without foreign key constraints
 // mockData.createCategories();
 // mockData.createUniverses();
 // mockData.createProducts();
+// mockData.createUsers();
 // mockData.createReviews();
 // mockData.createOrders();
 // mockData.createFavoriteCategories();
