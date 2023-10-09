@@ -1,9 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
 const {
   findRefreshTokenById,
-  deleteRefreshToken
+  deleteRefreshToken,
+  addRefreshTokenToWhitelist
 } = require('../auth/auth.services');
 const prisma = new PrismaClient();
+const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+const { hashToken } = require('../utils/hashToken');
+const { generateTokens } = require('../utils/jwt');
 
 module.exports = {
   getRefreshToken: async (req, res) => {
