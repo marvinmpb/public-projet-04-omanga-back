@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
   try {
     const token = authorization.split(' ')[1];
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
     // check if the user is an admin
     if (payload.role !== 'ADMIN') {

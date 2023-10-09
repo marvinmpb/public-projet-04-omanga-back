@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
   try {
     const token = authorization.split(' ')[1];
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     console.log(payload.role !== 'ADMIN');
 
     // check if the user is the one trying to access the resource
