@@ -21,7 +21,7 @@ module.exports = {
             create: {
               content: faker.lorem.paragraph(),
               rating: faker.number.int({ min: 1, max: 5 }),
-              product_id: faker.number.int({ min: 14, max: 43 }),
+              product_id: faker.number.int({ min: 1, max: 30 }),
             },
           },
           orders: {
@@ -29,17 +29,17 @@ module.exports = {
               order_date: faker.date.past(),
               archeving_date: faker.date.past(),
               product_quantity: faker.number.int({ min: 1, max: 200 }),
-              product_id: faker.number.int({ min: 14, max: 43 }),
+              product_id: faker.number.int({ min: 1, max: 30 }),
             },
           },
           favorite_categories: {
             create: {
-              category_id: faker.number.int({ min: 11, max: 40 }),
+              category_id: faker.number.int({ min: 1, max: 30 }),
             },
           },
           favorite_universes: {
             create: {
-              universe_id: faker.number.int({ min: 10, max: 39 }),
+              universe_id: faker.number.int({ min: 1, max: 30 }),
             },
           },
         },
@@ -87,8 +87,8 @@ module.exports = {
         data: {
           content: faker.lorem.paragraph(),
           rating: faker.number.int({ min: 1, max: 5 }),
-          user_id: faker.number.int({ min: 28, max: 57 }),
-          product_id: faker.number.int({ min: 14, max: 43 }),
+          user_id: faker.number.int({ min: 1, max: 30 }),
+          product_id: faker.number.int({ min: 1, max: 30 }),
         },
       });
       reviews.push(review);
@@ -107,8 +107,8 @@ module.exports = {
           description: faker.commerce.productDescription(),
           price: faker.number.float(),
           image_url: faker.image.url(),
-          category_id: faker.number.int({ min: 11, max: 40 }),
-          universe_id: faker.number.int({ min: 10, max: 39 }),
+          category_id: faker.number.int({ min: 1, max: 30 }),
+          universe_id: faker.number.int({ min: 1, max: 30 }),
         },
       });
       products.push(product);
@@ -125,8 +125,8 @@ module.exports = {
           order_date: faker.date.past(),
           archeving_date: faker.date.past(),
           product_quantity: faker.number.int({ min: 1, max: 200 }),
-          product_id: faker.number.int({ min: 14, max: 43 }),
-          user_id: faker.number.int({ min: 28, max: 57 }),
+          product_id: faker.number.int({ min: 1, max: 30 }),
+          user_id: faker.number.int({ min: 1, max: 30 }),
         },
       });
       orders.push(order);
@@ -140,7 +140,7 @@ module.exports = {
     for (let i = 0; i < 30; i++) {
       const favoriteCategory = await prisma.favoriteCategory.create({
         data: {
-          user_id: faker.number.int({ min: 28, max: 57 }),
+          user_id: faker.number.int({ min: 1, max: 30 }),
           category_id: faker.number.int({ min: 1, max: 30 }),
         },
       });
@@ -155,7 +155,7 @@ module.exports = {
     for (let i = 0; i < 30; i++) {
       const favoriteUniverse = await prisma.favoriteUniverse.create({
         data: {
-          user_id: faker.number.int({ min: 28, max: 57 }),
+          user_id: faker.number.int({ min: 1, max: 30 }),
           universe_id: faker.number.int({ min: 1, max: 30 }),
         },
       });
@@ -164,4 +164,3 @@ module.exports = {
     return favoriteUniverses;
   },
 };
-
