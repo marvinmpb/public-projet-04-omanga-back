@@ -1,8 +1,9 @@
 const http = require('http');
 const app = require('./app');
 const cors = require("cors");
-const router = require('./router/index')
-require('dotenv').config()
+const router = require('./router/index');
+require('dotenv').config();
+const mockData = require('./mockData')
 
 const port = (process.env.PORT || '5000');
 
@@ -35,6 +36,16 @@ app.use(cors());
 app.use(router)
 
 server.on('error', errorHandler);
+
+// execute in this order this to create mock data without foreign key constraints
+// mockData.createCategories();
+// mockData.createUniverses();
+// mockData.createProducts();
+// mockData.createUsers();
+// mockData.createReviews();
+// mockData.createOrders();
+// mockData.createFavoriteCategories();
+// mockData.createFavoriteUniverses();
 
 server.on('listening', () => {
   const address = server.address();

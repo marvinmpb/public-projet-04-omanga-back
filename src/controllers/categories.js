@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   getAllCategories: async (req, res) => {
@@ -15,15 +16,26 @@ module.exports = {
     });
 
     if (!result) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     res.status(200).json(result);
   },
 
   createCategory: async (req, res) => {
+    if (!req.body.image_url) {
+      return res.status(400).json({ message: 'Image url is required' });
+    }
+
+    const image = await cloudinary.uploader.upload(req.body.image_url, {
+      folder: 'categories',
+    })
+
     const result = await prisma.category.create({
-      data: req.body,
+      data: {
+        ...req.body,
+        image_url: image.secure_url,
+      },
     });
     res.status(201).json({ message: 'Category succesfully created', result });
   },
@@ -37,13 +49,19 @@ module.exports = {
   },
 
   updateOneCategory: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'categories',
+      })
+      req.body.image_url = image.secure_url;
+    }
     const id = req.params.id;
     const category = await prisma.category.findUnique({
       where: { id: parseInt(id) },
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const result = await prisma.category.update({

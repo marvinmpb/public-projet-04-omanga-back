@@ -13,7 +13,7 @@ module.exports = {
     });
 
     if (!result) {
-      return res.status(404).json({ message: "Order introuvable" });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     res.status(200).json(result);

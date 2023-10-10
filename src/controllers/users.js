@@ -1,12 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const APIError = require('../errors/APIError');
-const SECRET = process.env.JWT_SECRET;
+const { v4: uuidv4 } = require('uuid');
+const { generateTokens } = require('../utils/jwt');
+const { addRefreshTokenToWhitelist } = require('../auth/auth.services');
+const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   createOne: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'users',
+      })
+      req.body.image_url = image.secure_url;
+    }
+
     const salt = await bcrypt.genSalt(10);
 
     const cryptedPassword = await bcrypt.hash(req.body.password, salt);
@@ -20,13 +29,19 @@ module.exports = {
 
     // TODO: catch error and return explicit message before pri
     if (!user) {
-      throw new APIError({ code: 400, message: 'Un utilisateur avec cet email existe déjà' })
+      throw new APIError({ code: 400, message: 'User with this email already exists' })
     }
 
-    // Gérener un token
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
-    // Envoyer le token au client
-    return res.json({ token });
+    // exclude password, resetPassword & resetPasswordExpires from response
+    delete user.password;
+    delete user.resetPassword;
+    delete user.resetPasswordExpires;
+
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(user, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: user.id });
+
+    res.status(201).json({ message: 'User created', user, accessToken, refreshToken });
   },
 
   login: async (req, res) => {
@@ -39,16 +54,40 @@ module.exports = {
     const valid = await bcrypt.compare(req.body.password, user.password);
 
     if (!user || !valid) {
-      throw new APIError({ code: 401, message: 'Email ou mot de passe incorrect' })
+      throw new APIError({ code: 401, message: 'Invalid email or password' })
+    };
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: req.body.email
+      }
+    });
+
+    if (!existingUser) {
+      res.status(403);
+      throw new Error('Invalid login credentials.');
     }
 
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '24h' });
+    delete existingUser.password;
+    delete existingUser.resetPassword;
+    delete existingUser.resetPasswordExpires;
 
-    res.json({ token });
+    const jti = uuidv4();
+    const { accessToken, refreshToken } = generateTokens(existingUser, jti);
+    await addRefreshTokenToWhitelist({ jti, refreshToken, user_id: existingUser.id });
+
+    res.status(201).json({ message: 'Connected user', user: existingUser, accessToken, refreshToken });
+
   },
 
   getAllUsers: async (req, res) => {
     const result = await prisma.user.findMany()
+    // exclude password, resetPassword and resetPasswordExpires from response
+    result.map(user => {
+      delete user.password;
+      delete user.resetPassword;
+      delete user.resetPasswordExpires;
+    })
     res.status(200).json(result)
   },
 
@@ -61,13 +100,30 @@ module.exports = {
     })
 
     if (!result) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
+
+    delete result.password;
+    delete result.resetPassword;
+    delete result.resetPasswordExpires;
 
     res.status(200).json(result);
 
   },
   updateOneUser: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'users',
+      })
+      req.body.image_url = image.secure_url;
+    }
+
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const cryptedPassword = await bcrypt.hash(req.body.password, salt);
+      req.body.password = cryptedPassword;
+    }
+
     const result = await prisma.user.update({
       where: {
         id: parseInt(req.params.id)
@@ -75,7 +131,11 @@ module.exports = {
       data: req.body
     })
 
-    res.status(200).json({ message: 'Utilisateur mis à jour', result });
+    delete result.password;
+    delete result.resetPassword;
+    delete result.resetPasswordExpires;
+
+    res.status(200).json({ message: 'User succesfully updated', result });
   },
   deleteOneUser: async (req, res) => {
     const result = await prisma.user.delete({

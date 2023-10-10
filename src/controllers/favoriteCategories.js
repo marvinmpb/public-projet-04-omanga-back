@@ -3,14 +3,14 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllFavoriteCategories: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
 
     const user = await prisma.user.findUnique({
       where: { id: user_id },
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const favoriteCategories = await prisma.favoriteCategory.findMany({
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   addOneFavoriteCategory: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const category_id = parseInt(req.params.categoryId);
 
     const user = await prisma.user.findUnique({
@@ -34,7 +34,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const category = await prisma.category.findUnique({
@@ -42,7 +42,7 @@ module.exports = {
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const existingFavorite = await prisma.favoriteCategory.findFirst({
@@ -53,7 +53,7 @@ module.exports = {
     });
 
     if (existingFavorite) {
-      return res.status(400).json({ message: "Cette catégorie est déjà dans les favoris de l'utilisateur" });
+      return res.status(400).json({ message: "Category is already in the user's favorites" });
     }
 
     const favorite = await prisma.favoriteCategory.create({
@@ -68,7 +68,7 @@ module.exports = {
 
 
   removeOneFavoriteCategory: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const category_id = parseInt(req.params.categoryId);
 
     const user = await prisma.user.findUnique({
@@ -76,7 +76,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const category = await prisma.category.findUnique({
@@ -84,7 +84,7 @@ module.exports = {
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Catégorie introuvable" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const favorite = await prisma.favoriteCategory.findFirst({
@@ -95,7 +95,7 @@ module.exports = {
     });
 
     if (!favorite) {
-      return res.status(404).json({ message: "Cette catégorie n'est pas dans les favoris de l'utilisateur" });
+      return res.status(404).json({ message: "Category is not in the user's favorites" });
     }
 
     await prisma.favoriteCategory.delete({

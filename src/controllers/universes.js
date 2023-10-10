@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   getAllUniverses: async (req, res) => {
@@ -15,15 +16,26 @@ module.exports = {
     });
 
     if (!result) {
-      return res.status(404).json({ message: "Univers introuvable" });
+      return res.status(404).json({ message: "Universe not found" });
     }
 
     res.status(200).json(result);
 
   },
   createUniverse: async (req, res) => {
+    if (!req.body.image_url) {
+      return res.status(400).json({ message: 'Image url is required' });
+    }
+
+    const image = await cloudinary.uploader.upload(req.body.image_url, {
+      folder: 'universes',
+    })
+
     const result = await prisma.universe.create({
-      data: req.body,
+      data: {
+        ...req.body,
+        image_url: image.secure_url,
+      },
     });
 
     res.status(201).json({ message: 'Universe succesfully created', result });
@@ -39,6 +51,12 @@ module.exports = {
 
   },
   updateOneUniverse: async (req, res) => {
+    if (req.body.image_url) {
+      const image = await cloudinary.uploader.upload(req.body.image_url, {
+        folder: 'universes',
+      })
+      req.body.image_url = image.secure_url;
+    }
     const id = req.params.id;
     const result = await prisma.universe.update({
       where: { id: parseInt(id) },

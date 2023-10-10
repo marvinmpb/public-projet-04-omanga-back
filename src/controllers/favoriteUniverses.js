@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllFavoriteUniverses: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
 
     // Vérifier d'abord si l'utilisateur existe
     const user = await prisma.user.findUnique({
@@ -11,7 +11,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Récupérer les univers favoris de l'utilisateur en utilisant une jointure avec la table favoriteUniverse
@@ -28,7 +28,7 @@ module.exports = {
   },
 
   addOneFavoriteUniverse: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const universe_id = parseInt(req.params.universeId);
 
     const user = await prisma.user.findUnique({
@@ -36,7 +36,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const universe = await prisma.universe.findUnique({
@@ -44,7 +44,7 @@ module.exports = {
     });
 
     if (!universe) {
-      return res.status(404).json({ message: "Univers introuvable" });
+      return res.status(404).json({ message: "Universe not found" });
     }
 
     // Vérifier si l'utilisateur a déjà ajouté cet univers à ses favoris
@@ -56,7 +56,7 @@ module.exports = {
     });
 
     if (existingFavorite) {
-      return res.status(400).json({ message: "Cet univers est déjà dans les favoris de l'utilisateur" });
+      return res.status(400).json({ message: "Universe is already in the user's favorites" });
     }
 
     const favorite = await prisma.favoriteUniverse.create({
@@ -71,7 +71,7 @@ module.exports = {
 
 
   removeOneFavoriteUniverse: async (req, res) => {
-    const user_id = parseInt(req.params.userId);
+    const user_id = parseInt(req.params.id);
     const universe_id = parseInt(req.params.universeId);
 
     const user = await prisma.user.findUnique({
@@ -79,7 +79,7 @@ module.exports = {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const universe = await prisma.universe.findUnique({
@@ -87,7 +87,7 @@ module.exports = {
     });
 
     if (!universe) {
-      return res.status(404).json({ message: "Univers introuvable" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const favorite = await prisma.favoriteUniverse.findFirst({
@@ -98,7 +98,7 @@ module.exports = {
     });
 
     if (!favorite) {
-      return res.status(404).json({ message: "Cet univers n'est pas dans les favoris de l'utilisateur" });
+      return res.status(404).json({ message: "Universe is not in the user's favorites" });
     }
 
     // Supprimer l'entrée de la table favoriteUniverse
