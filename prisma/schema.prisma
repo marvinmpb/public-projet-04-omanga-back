@@ -91,8 +91,6 @@ model FavoriteCategory {
   user_id     Int
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
   category_id Int
-
-  @@unique([user_id, category_id])
 }
 
 model FavoriteUniverse {
@@ -101,8 +99,6 @@ model FavoriteUniverse {
   user_id     Int
   universe    Universe @relation(fields: [universe_id], references: [id], onDelete: Cascade)
   universe_id Int
-
-  @@unique([user_id, universe_id])
 }
 
 model RefreshToken {

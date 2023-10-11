@@ -38,14 +38,18 @@ app.use(router)
 server.on('error', errorHandler);
 
 // execute in this order this to create mock data without foreign key constraints
-// mockData.createCategories();
-// mockData.createUniverses();
-// mockData.createProducts();
-// mockData.createUsers();
-// mockData.createReviews();
-// mockData.createOrders();
-// mockData.createFavoriteCategories();
-// mockData.createFavoriteUniverses();
+async function createMockData() {
+  await mockData.createCategories();
+  await mockData.createUniverses();
+  await mockData.createProducts();
+  await mockData.createUsers();
+  await mockData.createReviews();
+  await mockData.createOrders();
+  await mockData.createFavoriteCategories();
+  await mockData.createFavoriteUniverses();
+}
+
+// createMockData();
 
 server.on('listening', () => {
   const address = server.address();

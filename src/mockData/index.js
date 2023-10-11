@@ -4,11 +4,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = {
-  createUsers: () => {
+  createUsers: async () => {
     console.log('Creating users...')
     const users = [];
     for (let i = 0; i < 30; i++) {
-      const user = prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           firstname: faker.person.firstName(),
           lastname: faker.person.lastName(),
@@ -49,11 +49,11 @@ module.exports = {
     return users;
   },
 
-  createCategories: () => {
+  createCategories: async () => {
     console.log('Creating categories...')
     const categories = [];
     for (let i = 0; i < 30; i++) {
-      const category = prisma.category.create({
+      const category = await prisma.category.create({
         data: {
           name: faker.commerce.department(),
           image_url: faker.image.url(),
@@ -64,11 +64,11 @@ module.exports = {
     return categories;
   },
 
-  createUniverses: () => {
+  createUniverses: async () => {
     console.log('Creating universes...')
     const universes = [];
     for (let i = 0; i < 30; i++) {
-      const universe = prisma.universe.create({
+      const universe = await prisma.universe.create({
         data: {
           name: faker.commerce.productMaterial(),
           image_url: faker.image.url(),
@@ -79,11 +79,11 @@ module.exports = {
     return universes;
   },
 
-  createReviews: () => {
+  createReviews: async () => {
     console.log('Creating reviews...')
     const reviews = [];
     for (let i = 0; i < 30; i++) {
-      const review = prisma.review.create({
+      const review = await prisma.review.create({
         data: {
           content: faker.lorem.paragraph(),
           rating: faker.number.int({ min: 1, max: 5 }),
@@ -96,11 +96,11 @@ module.exports = {
     return reviews;
   },
 
-  createProducts: (categories, universes) => {
+  createProducts: async (categories, universes) => {
     console.log('Creating products...')
     const products = [];
     for (let i = 0; i < 30; i++) {
-      const product = prisma.product.create({
+      const product = await prisma.product.create({
         data: {
           name: faker.commerce.productName(),
           stock: faker.number.int({ min: 0, max: 1000 }),
@@ -116,11 +116,11 @@ module.exports = {
     return products;
   },
 
-  createOrders: (users, products) => {
+  createOrders: async (users, products) => {
     console.log('Creating orders...')
     const orders = [];
     for (let i = 0; i < 30; i++) {
-      const order = prisma.order.create({
+      const order = await prisma.order.create({
         data: {
           order_date: faker.date.past(),
           archeving_date: faker.date.past(),
@@ -134,11 +134,11 @@ module.exports = {
     return orders;
   },
 
-  createFavoriteCategories: (users, categories) => {
+  createFavoriteCategories: async (users, categories) => {
     console.log('Creating favorite categories...')
     const favoriteCategories = [];
     for (let i = 0; i < 30; i++) {
-      const favoriteCategory = prisma.favoriteCategory.create({
+      const favoriteCategory = await prisma.favoriteCategory.create({
         data: {
           user_id: faker.number.int({ min: 1, max: 30 }),
           category_id: faker.number.int({ min: 1, max: 30 }),
@@ -149,11 +149,11 @@ module.exports = {
     return favoriteCategories;
   },
 
-  createFavoriteUniverses: (users, universes) => {
+  createFavoriteUniverses: async (users, universes) => {
     console.log('Creating favorite universes...')
     const favoriteUniverses = [];
     for (let i = 0; i < 30; i++) {
-      const favoriteUniverse = prisma.favoriteUniverse.create({
+      const favoriteUniverse = await prisma.favoriteUniverse.create({
         data: {
           user_id: faker.number.int({ min: 1, max: 30 }),
           universe_id: faker.number.int({ min: 1, max: 30 }),
