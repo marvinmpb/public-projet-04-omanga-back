@@ -4,7 +4,9 @@ const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   getAllCategories: async (req, res) => {
-    const result = await prisma.category.findMany()
+    const result = await prisma.category.findMany({
+      orderBy: [{ id: 'asc' }],
+    })
     res.json(result)
   },
 

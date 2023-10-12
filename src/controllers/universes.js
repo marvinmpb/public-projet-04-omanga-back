@@ -4,7 +4,11 @@ const cloudinary = require('../utils/cloudinary');
 
 module.exports = {
   getAllUniverses: async (req, res) => {
-    const result = await prisma.universe.findMany()
+    const result = await prisma.universe.findMany(
+      {
+        orderBy: [{ id: 'asc' }],
+      }
+    )
     res.status(200).json(result)
 
   },

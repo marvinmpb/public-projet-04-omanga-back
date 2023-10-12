@@ -7,6 +7,7 @@ module.exports = {
 
     const reviews = await prisma.review.findMany({
       where: { product_id },
+      orderBy: [{ id: 'asc' }],
     });
 
     res.status(200).json(reviews);

@@ -17,6 +17,7 @@ module.exports = {
           },
         },
       },
+      orderBy: [{ id: 'asc' }],
     });
     res.status(200).json(result);
   },

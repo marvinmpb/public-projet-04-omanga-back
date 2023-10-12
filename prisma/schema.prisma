@@ -48,6 +48,8 @@ model Product {
   description String   @db.VarChar(500)
   image_url   String   @db.VarChar(255)
   price       Float
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   orders      Order[]
   reviews     Review[]
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
@@ -72,6 +74,7 @@ model Category {
   name                String             @db.VarChar(255)
   image_url           String?            @db.VarChar(255)
   created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
   favorite_categories FavoriteCategory[]
   products            Product[]
 }
@@ -81,6 +84,7 @@ model Universe {
   name               String             @db.VarChar(255)
   image_url          String?            @db.VarChar(255)
   created_at         DateTime           @default(now())
+  updated_at         DateTime           @updatedAt
   favorite_universes FavoriteUniverse[]
   products           Product[]
 }

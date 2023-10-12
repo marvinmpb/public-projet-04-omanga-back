@@ -3,7 +3,11 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllOrders: async (req, res) => {
-    const result = await prisma.order.findMany();
+    const result = await prisma.order.findMany(
+      {
+        orderBy: [{ id: 'asc' }],
+      }
+    );
     res.status(200).json(result);
   },
   getOneOrder: async (req, res) => {

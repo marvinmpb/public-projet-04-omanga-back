@@ -81,7 +81,11 @@ module.exports = {
   },
 
   getAllUsers: async (req, res) => {
-    const result = await prisma.user.findMany()
+    const result = await prisma.user.findMany(
+      {
+        orderBy: [{ id: 'asc' }],
+      }
+    )
     // exclude password, resetPassword and resetPasswordExpires from response
     result.map(user => {
       delete user.password;
