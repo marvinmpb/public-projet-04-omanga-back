@@ -105,7 +105,7 @@ module.exports = {
           name: faker.commerce.productName(),
           stock: faker.number.int({ min: 0, max: 1000 }),
           description: faker.commerce.productDescription(),
-          price: faker.number.float(),
+          price: faker.number.float({ precision: 0.01 }),
           image_url: faker.image.url(),
           category_id: faker.number.int({ min: 1, max: 30 }),
           universe_id: faker.number.int({ min: 1, max: 30 }),
