@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const { generateTokens } = require('../utils/jwt');
 const { addRefreshTokenToWhitelist } = require('../auth/auth.services');
 const cloudinary = require('../utils/cloudinary');
+const { SendMailToUserOnDeleteAccount } = require('../utils/sendMail');
 
 module.exports = {
   createOne: async (req, res) => {
@@ -148,6 +149,9 @@ module.exports = {
       }
     })
 
+    SendMailToUserOnDeleteAccount(result);
+
     res.status(204).json();
   },
 };
+

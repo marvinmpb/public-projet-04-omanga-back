@@ -4,9 +4,10 @@ const validation = require('../middlewares/validate');
 const schema = require('../schemas/orders');
 const { Router } = require('express');
 const authenticate = require('../middlewares/authenticate');
+const adminCheck = require('../middlewares/adminCheck');
 const router = Router();
 
-router.get(`/`, asyncHelper(ordersController.getAllOrders))
+router.get(`/`, adminCheck, asyncHelper(ordersController.getAllOrders))
 
 router.get(`/:id`, authenticate, asyncHelper(ordersController.getOneOrder))
 
