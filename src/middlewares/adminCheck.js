@@ -14,7 +14,8 @@ module.exports = (req, res, next) => {
 
     // check if the user is an admin
     if (payload.role !== 'ADMIN') {
-      return res.status(401).json({ message: 'Forbidden, Admin only' });
+      res.status(401)
+      throw new Error('Forbidden Admin Only');
     }
 
     req.payload = payload;
@@ -24,7 +25,8 @@ module.exports = (req, res, next) => {
       res.status(401);
       throw new Error('Token expired');
     }
-    res.status(401);
+    res.status(401)
+    throw new Error(err.message);
   }
 
   next();
