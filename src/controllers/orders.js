@@ -28,7 +28,6 @@ module.exports = {
       data: req.body,
     });
 
-    console.log(result);
     SendMailToShopOwnerOnOrder(result);
     res.status(201).json({ message: 'Order succesfully created', result });
   },
