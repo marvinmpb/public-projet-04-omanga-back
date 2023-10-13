@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const MINUTES = 10;
 const express = require('express');
-const { SendMail } = require('../utils/sendMail');
+const { SendMailOnResetPassword } = require('../utils/sendMail');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,7 +34,7 @@ module.exports = {
     }
 
     // send email here
-    SendMail(getUser, token);
+    SendMailOnResetPassword(getUser, token);
 
     return res.status(200).json({ message: 'Sended email' });
   }

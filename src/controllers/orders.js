@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { SendMailToShopOwnerOnOrder } = require('../utils/sendMail');
 
 module.exports = {
   getAllOrders: async (req, res) => {
@@ -27,6 +28,8 @@ module.exports = {
       data: req.body,
     });
 
+    console.log(result);
+    SendMailToShopOwnerOnOrder(result);
     res.status(201).json({ message: 'Order succesfully created', result });
   },
   deleteOneOrder: async (req, res) => {
