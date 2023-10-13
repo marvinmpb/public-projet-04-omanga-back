@@ -23,8 +23,6 @@ module.exports = {
       orderBy: [{ id: 'asc' }],
     });
 
-    // return an array of objects and a key length for each object
     res.status(200).json({ categories, reviews, orders, products, users, universes });
   },
 }
-
