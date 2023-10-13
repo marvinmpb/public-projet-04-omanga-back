@@ -22,11 +22,9 @@ module.exports = (req, res, next) => {
   } catch (err) {
     console.log(err);
     if (err instanceof jwt.TokenExpiredError) {
-      res.status(401);
-      throw new Error('Token expired');
+      return res.status(401).json({ message: err.message });
     }
-    res.status(401)
-    throw new Error(err.message);
+    return res.status(401).json({ message: err.message });
   }
 
   next();
