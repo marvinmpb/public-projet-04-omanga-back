@@ -6,10 +6,10 @@ const { Router } = require('express');
 const authenticate = require('../middlewares/authenticate');
 const router = Router();
 
-router.post('/:id/favorite/universes/:universeId', authenticate, validation(schema.create, 'body'), asyncHelper(favoriteUniversesController.addOneFavoriteUniverse));
+router.post('/:userId/favorite/universes/:universeId', authenticate, validation(schema.create, 'body'), asyncHelper(favoriteUniversesController.addOneFavoriteUniverse));
 
-router.get('/:id/favorite/universes', authenticate, asyncHelper(favoriteUniversesController.getAllFavoriteUniverses));
+router.get('/:userId/favorite/universes', authenticate, asyncHelper(favoriteUniversesController.getAllFavoriteUniverses));
 
-router.delete('/:id/favorite/universes/:universeId', authenticate, asyncHelper(favoriteUniversesController.removeOneFavoriteUniverse));
+router.delete('/:userId/favorite/universes/:universeId', authenticate, asyncHelper(favoriteUniversesController.removeOneFavoriteUniverse));
 
 module.exports = router;

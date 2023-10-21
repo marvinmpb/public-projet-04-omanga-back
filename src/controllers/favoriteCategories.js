@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAllFavoriteCategories: async (req, res) => {
-    const user_id = parseInt(req.params.id);
+    const user_id = parseInt(req.params.userId);
 
     const user = await prisma.user.findUnique({
       where: { id: user_id },
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   addOneFavoriteCategory: async (req, res) => {
-    const user_id = parseInt(req.params.id);
+    const user_id = parseInt(req.params.userId);
     const category_id = parseInt(req.params.categoryId);
 
     const user = await prisma.user.findUnique({
@@ -68,7 +68,7 @@ module.exports = {
 
 
   removeOneFavoriteCategory: async (req, res) => {
-    const user_id = parseInt(req.params.id);
+    const user_id = parseInt(req.params.userId);
     const category_id = parseInt(req.params.categoryId);
 
     const user = await prisma.user.findUnique({

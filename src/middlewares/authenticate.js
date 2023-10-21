@@ -14,10 +14,17 @@ module.exports = (req, res, next) => {
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
     // check if the user is the one trying to access the resource
-    if (!(payload.id === parseInt(req.body.user_id) || (!payload.id === parseInt(req.params.userId)) || (payload.role === 'ADMIN'))) {
+
+    if (payload.id !== parseInt(req.params.userId) && payload.role !== 'ADMIN') {
       res.status(401)
       throw new Error('Forbidden');
     }
+
+    if (req.body.user_id && payload.id !== parseInt(req.body.user_id) && payload.role !== 'ADMIN') {
+      res.status(401)
+      throw new Error('Forbidden');
+    }
+
     req.payload = payload;
   } catch (err) {
     console.log(err);

@@ -18,12 +18,12 @@ router.post(`/login`, asyncHelper(usersController.login))
 router.get(`/`, adminCheck, asyncHelper(usersController.getAllUsers))
 
 // RECUP UN UTILISATEUR
-router.get(`/:id`, authenticate, asyncHelper(usersController.getOneUser))
+router.get(`/:userId`, authenticate, asyncHelper(usersController.getOneUser))
 
 // MODIFIER UN UTILISATEUR
-router.put(`/:id`, authenticate, validation(schema.update, 'body'), asyncHelper(usersController.updateOneUser))
+router.put(`/:userId`, authenticate, validation(schema.update, 'body'), asyncHelper(usersController.updateOneUser))
 
 // SUPPRIMER UN UTILISATEUR
-router.delete(`/:id`, authenticate, asyncHelper(usersController.deleteOneUser))
+router.delete(`/:userId`, authenticate, asyncHelper(usersController.deleteOneUser))
 
 module.exports = router;

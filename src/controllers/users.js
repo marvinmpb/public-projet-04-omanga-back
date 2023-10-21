@@ -99,7 +99,7 @@ module.exports = {
   getOneUser: async (req, res) => {
     const result = await prisma.user.findUnique({
       where: {
-        id: parseInt(req.params.id),
+        id: parseInt(req.params.userId),
       },
       include: { orders: true, favorite_categories: true, favorite_universes: true }
     })
@@ -131,7 +131,7 @@ module.exports = {
 
     const result = await prisma.user.update({
       where: {
-        id: parseInt(req.params.id)
+        id: parseInt(req.params.userId)
       },
       data: req.body
     })
@@ -145,7 +145,7 @@ module.exports = {
   deleteOneUser: async (req, res) => {
     const result = await prisma.user.delete({
       where: {
-        id: parseInt(req.params.id)
+        id: parseInt(req.params.userId)
       }
     })
 
