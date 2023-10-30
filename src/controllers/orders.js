@@ -23,6 +23,24 @@ module.exports = {
 
     res.status(200).json(result);
   },
+  getAllOrdersByUser: async (req, res) => {
+    const user_id = parseInt(req.params.userId);
+
+    const user = await prisma.user.findUnique({
+      where: { id: user_id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const orders = await prisma.order.findMany({
+      where: { user_id },
+      orderBy: [{ id: 'asc' }],
+    });
+
+    res.status(200).json(orders);
+  },
   createOrder: async (req, res) => {
     const result = await prisma.order.create({
       data: req.body,

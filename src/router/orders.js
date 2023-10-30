@@ -9,6 +9,8 @@ const router = Router();
 
 router.get(`/`, adminCheck, asyncHelper(ordersController.getAllOrders))
 
+router.get(`/users/:userId`, authenticate, asyncHelper(ordersController.getAllOrdersByUser))
+
 router.get(`/:id`, authenticate, asyncHelper(ordersController.getOneOrder))
 
 router.post(`/`, authenticate, validation(schema.create, 'body'), asyncHelper(ordersController.createOrder))
