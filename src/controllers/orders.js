@@ -13,9 +13,18 @@ module.exports = {
   },
   getOneOrder: async (req, res) => {
     const id = req.params.id;
+
     const result = await prisma.order.findUnique({
       where: { id: parseInt(id) },
     });
+
+    const user = await prisma.user.findUnique({
+      where: { id: req.body.user_id },
+    });
+
+    if (user.role === 'USER' && result.user_id !== req.body.user_id) {
+      return res.status(403).json({ message: "You are not authorised to access to this order" });
+    }
 
     if (!result) {
       return res.status(404).json({ message: "Order not found" });

@@ -83,7 +83,7 @@ module.exports = {
       return res.status(404).json({ message: "Review not found" });
     }
 
-    if (review.user_id !== user_id) {
+    if (review.user_id !== user_id && user.role === 'USER') {
       return res.status(403).json({ message: "You are not authorised to delete this review" });
     }
 
@@ -100,7 +100,7 @@ module.exports = {
   updateOneReview: async (req, res) => {
     const user_id = parseInt(req.params.userId);
     const review_id = parseInt(req.params.reviewId);
-    const { rating, content } = req.body;
+    const { rating, content, published } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { id: user_id },
@@ -129,9 +129,10 @@ module.exports = {
       data: {
         rating,
         content,
+        published,
       },
     });
 
-    res.status(200).json(updatedReview);
+    res.status(200).json({ message: 'Review succesfully updated', updatedReview });
   },
 };

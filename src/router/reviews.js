@@ -10,10 +10,10 @@ router.post('/users/:userId/products/:productId', authenticate, validation(schem
 
 router.get('/products/:productId', asyncHelper(reviewsController.getAllReviewsByProduct));
 
-router.get('/reviews/:reviewId', asyncHelper(reviewsController.getOneReview));
+router.get('/:reviewId', asyncHelper(reviewsController.getOneReview));
 
-router.put('/users/:userId/reviews/:reviewId', authenticate, validation(schema.update, 'body'), asyncHelper(reviewsController.updateOneReview));
+router.put('/:reviewId/users/:userId', authenticate, validation(schema.update, 'body'), asyncHelper(reviewsController.updateOneReview));
 
-router.delete('/users/:userId/reviews/:reviewId', authenticate, asyncHelper(reviewsController.deleteOneReview));
+router.delete('/:reviewId/users/:userId', authenticate, asyncHelper(reviewsController.deleteOneReview));
 
 module.exports = router;
