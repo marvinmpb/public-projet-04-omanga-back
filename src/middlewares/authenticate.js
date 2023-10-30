@@ -13,8 +13,6 @@ module.exports = (req, res, next) => {
 
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
-    console.log(payload.role, payload.id, req.params.userId, req.body.user_id)
-
     // check if the user is the one trying to access the resource
 
     if (payload.role === 'USER' && payload.id !== parseInt(req.params.userId) && payload.id !== parseInt(req.body.user_id)) {
