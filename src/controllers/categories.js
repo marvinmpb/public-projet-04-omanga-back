@@ -29,6 +29,18 @@ module.exports = {
       return res.status(400).json({ message: 'Image url is required' });
     }
 
+    // avoid the creation of the category if the name already exists
+    const existingCategory = await prisma.category.findFirst({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (existingCategory) {
+      return res.status(400).json({ message: "Category already exists" });
+    }
+
+
     const image = await cloudinary.uploader.upload(req.body.image_url, {
       folder: 'categories',
     })
@@ -64,6 +76,17 @@ module.exports = {
 
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
+    }
+
+    // avoid the update of the category if the name already exists
+    const existingCategory = await prisma.category.findFirst({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (existingCategory) {
+      return res.status(400).json({ message: "Category already exists" });
     }
 
     const result = await prisma.category.update({

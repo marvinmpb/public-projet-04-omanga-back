@@ -4,7 +4,7 @@ const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 
 function SendMailOnResetPassword(getUser, token) {
   const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
+    port: 465,
     host: "smtp.gmail.com",
     auth: {
       user: EMAIL_ADDRESS,
@@ -32,7 +32,7 @@ function SendMailOnResetPassword(getUser, token) {
 
 function SendMailToShopOwnerOnOrder(order) {
   const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
+    port: 465,
     host: "smtp.gmail.com",
     auth: {
       user: EMAIL_ADDRESS,
@@ -59,7 +59,7 @@ function SendMailToShopOwnerOnOrder(order) {
 
 function SendMailToUserOnDeleteAccount(user) {
   const transporter = nodemailer.createTransport({
-    port: 465,               // true for 465, false for other ports
+    port: 465,
     host: "smtp.gmail.com",
     auth: {
       user: EMAIL_ADDRESS,
