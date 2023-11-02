@@ -29,7 +29,6 @@ module.exports = {
         },
       });
 
-      // revoke refreshtokens
       await prisma.refreshToken.updateMany({
         where: {
           user_id: user.id,

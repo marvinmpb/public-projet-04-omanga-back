@@ -28,11 +28,6 @@ module.exports = {
       }
     })
 
-    // TODO: catch error and return explicit message before pri
-    if (!user) {
-      throw new APIError({ code: 400, message: 'User with this email already exists' })
-    }
-
     // exclude password, resetPassword & resetPasswordExpires from response
     delete user.password;
     delete user.resetPassword;

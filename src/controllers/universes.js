@@ -31,6 +31,17 @@ module.exports = {
       return res.status(400).json({ message: 'Image url is required' });
     }
 
+    // avoid the creation of the universe if the name already exists
+    const existingUniverse = await prisma.universe.findFirst({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (existingUniverse) {
+      return res.status(400).json({ message: "Universe already exists" });
+    }
+
     const image = await cloudinary.uploader.upload(req.body.image_url, {
       folder: 'universes',
     })
@@ -62,6 +73,26 @@ module.exports = {
       req.body.image_url = image.secure_url;
     }
     const id = req.params.id;
+    const universe = await prisma.universe.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!universe) {
+      return res.status(404).json({ message: "Universe not found" });
+    }
+
+    // avoid the update of the universe if the name already exists
+    const existingUniverse = await prisma.universe.findFirst({
+      where: {
+        name: req.body.name,
+      },
+    });
+
+    if (existingUniverse) {
+      return res.status(400).json({ message: "Universe already exists" });
+    }
+
+
     const result = await prisma.universe.update({
       where: { id: parseInt(id) },
       data: req.body,
@@ -71,4 +102,3 @@ module.exports = {
 
   }
 };
-
